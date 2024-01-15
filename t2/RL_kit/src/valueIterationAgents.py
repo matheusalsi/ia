@@ -11,6 +11,17 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+# A iteração de valor calcula estimativas de k passos dos valores ótimos, Vk. Além
+# de executar a iteração de valor, implemente os seguintes métodos
+# para ValueIterationAgent usando Vk.
+# • computeActionFromValues(state) calcula a melhor ação de acordo com a
+# função de valor fornecida por self.values.
+# • computeQValueFromValues(state, action) retorna o valor-Q do par (estado,
+# ação) dado pela função de valor em self.values. Lembre-se que, uma vez
+# que o valor de cada estado está determinado, e conhecendo as
+# probabilidades de transição (obtidas com getTransitionStatesAndProbs),
+# podemos calcular os valores Q de pares estado-ação.
+
 
 import mdp, util
 from learningAgents import ValueEstimationAgent
@@ -44,6 +55,38 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+
+        states = mdp.getStates()
+        novoValor = 0
+        for state in states:
+            self.values[state] += 1  # incrementa o contador
+            # print(f"Next State: " + str (len(self.values)))
+            possibleActions = mdp.getPossibleActions(state)
+            for action in possibleActions:
+                listOfTransitionStates = mdp.getTransitionStatesAndProbs(state, action)
+                # print(listOfTransitionStates[0][0])
+                bestReward = 0
+                stateProbability = 0
+                for nextState, probability in listOfTransitionStates:
+                    print(f"Next State: "+ str(nextState))
+                    print(f"Probability: "+ str(probability))
+                    currentReward = mdp.getReward(state, action, nextState)
+                    print(f"Reward: "+ str(currentReward ) + "\n")
+                    bestReward = max(bestReward, currentReward)
+                    # if(bestReward < currentReward):
+                    #     bestReward = currentReward 
+                    #     stateProbability = probability
+                
+        novoValor += stateProbability * (bestReward + self.discount * self.values[state])
+        print(f"Best Reward: "+ str(bestReward))
+        print(f"Novo Valor: "+ str(novoValor))
+                   
+
+            
+    
+
+
+            
 
 
     def getValue(self, state):
@@ -81,3 +124,8 @@ class ValueIterationAgent(ValueEstimationAgent):
 
     def getQValue(self, state, action):
         return self.computeQValueFromValues(state, action)
+    
+
+
+
+   
