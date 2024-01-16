@@ -54,39 +54,21 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.values = util.Counter()  # A Counter is a dict with default 0
 
         # Write value iteration code here
-        "*** YOUR CODE HERE ***"
-
-        states = mdp.getStates()
-        novoValor = 0
-        for state in states:
-            self.values[state] += 1  # incrementa o contador
-            # print(f"Next State: " + str (len(self.values)))
-            possibleActions = mdp.getPossibleActions(state)
-            for action in possibleActions:
-                listOfTransitionStates = mdp.getTransitionStatesAndProbs(state, action)
-                # print(listOfTransitionStates[0][0])
-                bestReward = 0
-                stateProbability = 0
-                for nextState, probability in listOfTransitionStates:
-                    print(f"Next State: "+ str(nextState))
-                    print(f"Probability: "+ str(probability))
-                    currentReward = mdp.getReward(state, action, nextState)
-                    print(f"Reward: "+ str(currentReward ) + "\n")
-                    bestReward = max(bestReward, currentReward)
-                    # if(bestReward < currentReward):
-                    #     bestReward = currentReward 
-                    #     stateProbability = probability
                 
-        novoValor += stateProbability * (bestReward + self.discount * self.values[state])
-        print(f"Best Reward: "+ str(bestReward))
-        print(f"Novo Valor: "+ str(novoValor))
-                   
+        for iteration in range(iterations):
+            counter = util.Counter()
+            states = self.mdp.getStates()
 
-            
-    
+            for state in states:
+                bestReward = float('-inf')
+                possibleActions = self.mdp.getPossibleActions(state)
 
-
-            
+                for action in possibleActions:
+                    currentReward = self.getQValue(state, action)
+                    bestReward = max(bestReward, currentReward)
+                    counter[state] = bestReward
+                    
+            self.values = counter
 
 
     def getValue(self, state):
@@ -100,7 +82,15 @@ class ValueIterationAgent(ValueEstimationAgent):
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
-        "*** YOUR CODE HERE ***"
+        listOfTransitionStates = self.mdp.getTransitionStatesAndProbs(state, action)
+        qValue = 0
+
+        for nextState, probability in listOfTransitionStates:
+            currentReward = self.mdp.getReward(state, action, nextState)
+            qValue += (probability * (currentReward + self.discount * self.getValue(nextState)))
+        
+        return qValue
+
         util.raiseNotDefined()
 
     def computeActionFromValues(self, state):
@@ -112,7 +102,20 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        "*** YOUR CODE HERE ***"
+        isTerminal = self.mdp.isTerminal(state)
+
+        if not(isTerminal):
+            maxValue = float('-inf')
+            possibleActions = self.mdp.getPossibleActions(state)
+            for action in possibleActions:
+                qValue = self.getQValue(state, action)
+                if qValue > maxValue:
+                    bestAction = action
+                    maxValue = qValue
+            return bestAction
+        else:
+            return None
+        
         util.raiseNotDefined()
 
     def getPolicy(self, state):
