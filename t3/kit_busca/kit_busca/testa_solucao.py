@@ -54,41 +54,41 @@ class TestaSolucao(unittest.TestCase):
         return response
 
 
-    # def test_run_astar_hamming(self):
-    #     """
-    #     Testa o A* com dist. Hamming em um estado com solução e outro sem solução.
-    #     Atencao! Passar nesse teste com '2_3541687' apenas significa que a lista retornada tem o
-    #     numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
-    #     :return:
-    #     """
-    #     # no estado 2_3541687, a solucao otima tem 23 movimentos.
-    #     self.assertEqual(23, len(self.run_algorithm(solucao.astar_hamming, "2_3541687")))
+    def test_run_astar_hamming(self):
+        """
+        Testa o A* com dist. Hamming em um estado com solução e outro sem solução.
+        Atencao! Passar nesse teste com '2_3541687' apenas significa que a lista retornada tem o
+        numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
+        :return:
+        """
+        # no estado 2_3541687, a solucao otima tem 23 movimentos.
+        self.assertEqual(23, len(self.run_algorithm(solucao.astar_hamming, "2_3541687")))
 
-    #     # nao ha solucao a partir do estado 185423_67
-    #     self.assertIsNone(self.run_algorithm(solucao.astar_hamming, "185423_67"))
+        # nao ha solucao a partir do estado 185423_67
+        self.assertIsNone(self.run_algorithm(solucao.astar_hamming, "185423_67"))
 
-    # def test_run_astar_manhattan(self):
-    #     """
-    #     Testa o A* com dist. Manhattan em um estado com solução e outro sem solução.
-    #     Atencao! Passar nesse teste com '2_3541687' apenas significa que a lista retornada tem o
-    #     numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
-    #     :return:
-    #     """
-    #     # no estado 2_3541687, a solucao otima tem 23 movimentos.
-    #     self.assertEqual(23, len(self.run_algorithm(solucao.astar_manhattan, "2_3541687")))
+    def test_run_astar_manhattan(self):
+        """
+        Testa o A* com dist. Manhattan em um estado com solução e outro sem solução.
+        Atencao! Passar nesse teste com '2_3541687' apenas significa que a lista retornada tem o
+        numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
+        :return:
+        """
+        # no estado 2_3541687, a solucao otima tem 23 movimentos.
+        self.assertEqual(23, len(self.run_algorithm(solucao.astar_manhattan, "2_3541687")))
 
-    #     # nao ha solucao a partir do estado 185423_67
-    #     self.assertIsNone(self.run_algorithm(solucao.astar_manhattan, "185423_67"))
+        # nao ha solucao a partir do estado 185423_67
+        self.assertIsNone(self.run_algorithm(solucao.astar_manhattan, "185423_67"))
     
-    # def test_action_order(self):
-    #     """
-    #     Testa se A* retornam a sequencia de acoes na ordem correta
-    #     """
-    #     estado = "1235_6478"
-    #     solucao_otima = ['esquerda', 'abaixo', 'direita', 'direita']
+    def test_action_order(self):
+        """
+        Testa se A* retornam a sequencia de acoes na ordem correta
+        """
+        estado = "1235_6478"
+        solucao_otima = ['esquerda', 'abaixo', 'direita', 'direita']
 
-    #     for alg in [solucao.astar_hamming, solucao.astar_manhattan]:
-    #         self.assertEqual(solucao_otima, self.run_algorithm(alg, estado))
+        for alg in [solucao.astar_hamming, solucao.astar_manhattan]:
+            self.assertEqual(solucao_otima, self.run_algorithm(alg, estado))
 
 if __name__ == '__main__':
     unittest.main()
